@@ -1,11 +1,13 @@
 use whoami;
-use std::path::Display;
-use std::env;
 use std::io::{stdin, stdout, Write};
+use std::env;
+use std::fs;
+use std::path::Path;
 
 fn main() {
     loop {
-        print!("{}@{}:{} $ ", whoami::username(), whoami::hostname(), env::current_dir().unwrap().display());
+        let cwd = env::current_dir().unwrap();
+        print!("{}@{}:{} $ ", whoami::username(), whoami::hostname(), cwd.display());
         stdout().flush().unwrap();
 
         let mut line = String::new();
@@ -16,12 +18,14 @@ fn main() {
         if line == "exit" {
             return;
         } else if line == "ls" {
-            list_segment( env::current_dir().unwrap().display() )
+            list_segment(cwd.as_path())
         }
     }
 }
 
-fn list_segment(path: Display) -> () {
-    println!("{}", path);
-
+fn list_segment(p: &Path) {
+    let paths = fs::read_dir(p).unwrap();
+    for path in paths {
+        println!("{}", path.unwrap().path().display());
+    }
 }
