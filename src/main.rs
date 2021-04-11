@@ -1,4 +1,5 @@
 use whoami;
+use std::path::Display;
 use std::env;
 use std::io::{stdin, stdout, Write};
 
@@ -14,6 +15,13 @@ fn main() {
 
         if line == "exit" {
             return;
+        } else if line == "ls" {
+            list_segment( env::current_dir().unwrap().display() )
         }
     }
+}
+
+fn list_segment(path: Display) -> () {
+    println!("{}", path);
+
 }
