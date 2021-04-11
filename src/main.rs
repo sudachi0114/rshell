@@ -18,14 +18,17 @@ fn main() {
         if line == "exit" {
             return;
         } else if line == "ls" {
-            list_segment(cwd.as_path())
+            list_segment(Path::new("./"))
         }
     }
 }
 
 fn list_segment(p: &Path) {
-    let paths = fs::read_dir(p).unwrap();
-    for path in paths {
-        println!("{}", path.unwrap().path().display());
+    match fs::read_dir(p) {
+        Err(e) => eprintln!("{}", e),
+        Ok(paths) => for path in paths {
+            println!("{}", path.unwrap().path().display());
+        }
+    
     }
 }
