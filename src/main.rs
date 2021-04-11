@@ -21,7 +21,10 @@ fn main() {
             return;
         } else if line_split[0] == "ls" {
             list_segment(Path::new("./"));
+        } else if line_split[0] == "cd" {
+            chage_directory(Path::new(line_split[1]));
         }
+
     }
 }
 
@@ -33,4 +36,11 @@ fn list_segment(p: &Path) {
         }
     
     }
+}
+
+fn chage_directory(p: &Path) {
+    match env::set_current_dir(p) {
+        Ok(_) => (),
+        Err(e) => eprintln!("{}", e)
+    };
 }
