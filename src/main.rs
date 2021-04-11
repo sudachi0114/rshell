@@ -13,13 +13,18 @@ fn main() {
         let mut line = String::new();
         stdin().read_line(&mut line).expect("Failed to read line.");
         line.remove(line.len() - 1);
-        println!("(debug) {}", line);
 
-        if line == "exit" {
+        let line_split: Vec<&str> = line.split(" ").collect();
+        println!("(debug) {:?}", line_split);
+
+        if line_split[0] == "exit" {
             return;
-        } else if line == "ls" {
-            list_segment(Path::new("./"))
+        } else if line_split[0] == "ls" {
+            list_segment(Path::new("./"));
+        } else if line_split[0] == "cd" {
+            chage_directory(Path::new(line_split[1]));
         }
+
     }
 }
 
@@ -31,4 +36,11 @@ fn list_segment(p: &Path) {
         }
     
     }
+}
+
+fn chage_directory(p: &Path) {
+    match env::set_current_dir(p) {
+        Ok(_) => (),
+        Err(e) => eprintln!("{}", e)
+    };
 }
